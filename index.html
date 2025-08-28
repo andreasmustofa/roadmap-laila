@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Jalan Karier</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .career-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 15px 25px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .tab-btn.active {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            border-color: #fff;
+        }
+        
+        .career-content {
+            display: none;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .career-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .timeline {
+            position: relative;
+            margin: 30px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #4CAF50, #2196F3, #FF9800);
+            border-radius: 2px;
+        }
+        
+        .phase {
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .phase-header:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .phase-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-right: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .foundation { background: linear-gradient(135deg, #4CAF50, #45a049); }
+        .intermediate { background: linear-gradient(135deg, #2196F3, #1976d2); }
+        .advanced { background: linear-gradient(135deg, #FF9800, #f57c00); }
+        
+        .phase-title {
+            flex-grow: 1;
+        }
+        
+        .phase-title h3 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.4em;
+        }
+        
+        .phase-duration {
+            color: #666;
+            font-weight: bold;
+        }
+        
+        .phase-content {
+            margin-left: 80px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #e0e0e0;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .skill-category {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #007bff;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-category:hover {
+            background: #e3f2fd;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .skill-category h4 {
+            color: #007bff;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        
+        .skill-list {
+            list-style: none;
+        }
+        
+        .skill-list li {
+            padding: 8px 0;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .skill-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .resources-section {
+            margin-top: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .resource-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .resource-card h4 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .resource-link {
+            display: block;
+            color: #e3f2fd;
+            text-decoration: none;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+        
+        .resource-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        .milestone-section {
+            margin-top: 30px;
+            background: #fff3e0;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #ff9800;
+        }
+        
+        .milestone-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .milestone-time {
+            font-weight: bold;
+            color: #ff9800;
+            margin-bottom: 8px;
+        }
+        
+        .career-description {
+            background: linear-gradient(135deg, #e8f5e8, #f0f8ff);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #4CAF50;
+        }
+        
+        .career-description h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        .career-description p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .salary-info {
+            background: linear-gradient(135deg, #f3e5f5, #fce4ec);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #9c27b0;
+        }
+        
+        .salary-info h4 {
+            color: #7b1fa2;
+            margin-bottom: 10px;
+        }
+        
+        .salary-ranges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .salary-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .salary-level {
+            font-weight: bold;
+            color: #7b1fa2;
+            margin-bottom: 5px;
+        }
+        
+        .salary-amount {
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .phase-content {
+                margin-left: 60px;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .career-tabs {
+                gap: 10px;
+            }
+            
+            .tab-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Roadmap Pengembangan Karier Laila Rahmawati</h1>
+        
+        <div class="career-tabs">
+            <button class="tab-btn active" data-target="frontend">💻 Frontend Developer</button>
+            <button class="tab-btn" data-target="data-analyst">📊 Data Analyst</button>
+            <button class="tab-btn" data-target="software-engineer">⚙️ Software Engineer</button>
+        </div>
+
+        <!-- Frontend Developer Content -->
+        <div class="career-tabs">
+    <button class="tab-btn active" data-target="frontend">💻 Frontend Developer</button>
+    <button class="tab-btn" data-target="uiux-designer">🎨 UI/UX Designer</button>
+    <button class="tab-btn" data-target="product-designer">✨ Product Designer</button>
+</div>
+
+<!-- Product Designer Content -->
+<div id="product-designer" class="career-content">
+    <div class="career-description">
+        <h3>✨ Product Designer</h3>
+        <p>Cocok untuk kreativitas, inovasi, dan ambisi membangun perusahaan. Fokus pada desain produk digital yang bernilai bisnis dan berpusat pada pengguna.</p>
+    </div>
+    
+    <div class="timeline">
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-icon foundation">1</div>
+                <div class="phase-title">
+                    <h3>Fondasi Dasar</h3>
+                    <div class="phase-duration">0-4 Bulan</div>
+                </div>
+            </div>
+            <div class="phase-content">
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Desain Dasar</h4>
+                        <ul class="skill-list">
+                            <li>Prinsip desain (kontras, hirarki, grid)</li>
+                            <li>Typography & warna</li>
+                            <li>Wireframing dasar</li>
+                            <li>Sketching ide produk</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Alat Desain</h4>
+                        <ul class="skill-list">
+                            <li>Figma / Sketch / Adobe XD</li>
+                            <li>Design system dasar</li>
+                            <li>Icon & ilustrasi sederhana</li>
+                            <li>Kolaborasi desain</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>UX Research Dasar</h4>
+                        <ul class="skill-list">
+                            <li>User persona</li>
+                            <li>User journey mapping</li>
+                            <li>Interview & survey sederhana</li>
+                            <li>Competitive analysis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-icon intermediate">2</div>
+                <div class="phase-title">
+                    <h3>Tingkat Menengah</h3>
+                    <div class="phase-duration">4-10 Bulan</div>
+                </div>
+            </div>
+            <div class="phase-content">
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Desain Produk</h4>
+                        <ul class="skill-list">
+                            <li>Prototyping interaktif</li>
+                            <li>Design system & komponen reusable</li>
+                            <li>Micro-interactions</li>
+                            <li>Usability testing</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Kolaborasi Tim</h4>
+                        <ul class="skill-list">
+                            <li>Kolaborasi dengan PM & developer</li>
+                            <li>Design handoff (Zeplin/Figma Inspect)</li>
+                            <li>Agile & Scrum basics</li>
+                            <li>Design critique</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Business Thinking</h4>
+                        <ul class="skill-list">
+                            <li>Product-market fit</li>
+                            <li>Value proposition canvas</li>
+                            <li>Basic business model</li>
+                            <li>Metrics & KPI untuk desain</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header">
+                <div class="phase-icon advanced">3</div>
+                <div class="phase-title">
+                    <h3>Tingkat Lanjutan</h3>
+                    <div class="phase-duration">10-18 Bulan</div>
+                </div>
+            </div>
+            <div class="phase-content">
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Advanced UX Strategy</h4>
+                        <ul class="skill-list">
+                            <li>Service design</li>
+                            <li>Design sprint</li>
+                            <li>Accessibility & inclusivity</li>
+                            <li>Scalable design ops</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Leadership</h4>
+                        <ul class="skill-list">
+                            <li>Mentoring junior designer</li>
+                            <li>Leading design workshop</li>
+                            <li>Cross-functional collaboration</li>
+                            <li>Stakeholder management</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Entrepreneurial Design</h4>
+                        <ul class="skill-list">
+                            <li>Go-to-market strategy</li>
+                            <li>Product validation</li>
+                            <li>Design for scalability</li>
+                            <li>Pitching desain ke investor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="salary-info">
+        <h4>💰 Estimasi Gaji Product Designer (Indonesia)</h4>
+        <div class="salary-ranges">
+            <div class="salary-item">
+                <div class="salary-level">Junior</div>
+                <div class="salary-amount">7-12 juta/bulan</div>
+            </div>
+            <div class="salary-item">
+                <div class="salary-level">Mid-level</div>
+                <div class="salary-amount">12-25 juta/bulan</div>
+            </div>
+            <div class="salary-item">
+                <div class="salary-level">Senior</div>
+                <div class="salary-amount">25-40+ juta/bulan</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="milestone-section">
+        <h3>🎯 Target Pencapaian</h3>
+        <div class="milestone-item">
+            <div class="milestone-time">4 Bulan:</div>
+            Buat prototype interaktif aplikasi sederhana
+        </div>
+        <div class="milestone-item">
+            <div class="milestone-time">8 Bulan:</div>
+            Ikut proyek nyata dengan tim developer & PM
+        </div>
+        <div class="milestone-item">
+            <div class="milestone-time">15 Bulan:</div>
+            Rancang produk digital end-to-end dan pamerkan portfolio
+        </div>
+    </div>
+</div>
+
+
+        <!-- Resources Section -->
+        <div class="resources-section">
+            <h3>📚 Sumber Pembelajaran Terpilih</h3>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4>🆓 Platform Gratis</h4>
+                    <a href="#" class="resource-link">freeCodeCamp - Full Stack</a>
+                    <a href="#" class="resource-link">Coursera - Google Data Analytics</a>
+                    <a href="#" class="resource-link">Codecademy - Interactive Learning</a>
+                    <a href="#" class="resource-link">YouTube - Programming with Mosh</a>
+                    <a href="#" class="resource-link">Kaggle Learn - Data Science</a>
+                </div>
+                <div class="resource-card">
+                    <h4>💳 Platform Berbayar</h4>
+                    <a href="#" class="resource-link">Udemy - Comprehensive Courses</a>
+                    <a href="#" class="resource-link">Pluralsight - Tech Skills</a>
+                    <a href="#" class="resource-link">Frontend Masters - Advanced JS</a>
+                    <a href="#" class="resource-link">DataCamp - Data Analysis</a>
+                    <a href="#" class="resource-link">LeetCode Premium - Coding Interview</a>
+                </div>
+                <div class="resource-card">
+                    <h4>🛠️ Platform Praktik</h4>
+                    <a href="#" class="resource-link">GitHub - Portfolio Projects</a>
+                    <a href="#" class="resource-link">CodePen - Frontend Demos</a>
+                    <a href="#" class="resource-link">HackerRank - Problem Solving</a>
+                    <a href="#" class="resource-link">Tableau Public - Data Viz</a>
+                    <a href="#" class="resource-link">Vercel/Netlify - Deployment</a>
+                </div>
+                <div class="resource-card">
+                    <h4>🎓 Sertifikasi</h4>
+                    <a href="#" class="resource-link">AWS Certified Developer</a>
+                    <a href="#" class="resource-link">Google Analytics Certified</a>
+                    <a href="#" class="resource-link">Microsoft Azure Fundamentals</a>
+                    <a href="#" class="resource-link">Oracle SQL Certification</a>
+                    <a href="#" class="resource-link">Meta Frontend Developer</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Section -->
+        <div style="background: linear-gradient(135deg, #e8f5e8, #f0f8ff); padding: 30px; border-radius: 15px; margin-top: 30px;">
+            <h3 style="text-align: center; color: #2e7d32; margin-bottom: 25px;">🔍 Perbandingan Jalur Karir</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <h4 style="color: #1976d2; margin-bottom: 15px;">💻 Frontend Developer</h4>
+                    <p style="color: #555; margin-bottom: 10px;"><strong>✅ Cocok jika:</strong> Suka visual, design, dan user interaction</p>
+                    <p style="color: #555; margin-bottom: 10px;"><strong>⏰ Learning curve:</strong> Moderate (4-12 bulan)</p>
+                    <p style="color: #555;"><strong>🎯 Job market:</strong> Tinggi, banyak remote opportunities</p>
+                </div>
+                <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <h4 style="color: #f57c00; margin-bottom: 15px;">📊 Data Analyst</h4>
+                    <p style="color: #555; margin-bottom: 10px;"><strong>✅ Cocok jika:</strong> Suka matematika, pola, dan insight bisnis</p>
+                    <p style="color: #555; margin-bottom: 10px;"><strong>⏰ Learning curve:</strong> Moderate to High (6-15 bulan)</p>
+                    <p style="color: #555;"><strong>🎯 Job market:</strong> Growing rapidly, semua industri butuh</p>
+                </div>
+                <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <h4 style="color: #7b1fa2; margin-bottom: 15px;">⚙️ Software Engineer</h4>
+                    <p style="color: #555; margin-bottom: 10px;"><strong>✅ Cocok jika:</strong> Ambisi tinggi, suka problem solving kompleks</p>
+                    <p style="color: #555; margin-bottom: 10px;"><strong>⏰ Learning curve:</strong> High (8-18 bulan)</p>
+                    <p style="color: #555;"><strong>🎯 Job market:</strong> Excellent, highest growth potential</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.8); border-radius: 10px; border-left: 5px solid #4CAF50;">
+                <h4 style="color: #2e7d32; margin-bottom: 15px;">💡 Rekomendasi Berdasarkan Background Anda</h4>
+                <p style="color: #555; line-height: 1.6;"><strong>Prioritas 1:</strong> Frontend Developer - paling aligned dengan skill HTML/CSS/JS dan minat layouting</p>
+                <p style="color: #555; line-height: 1.6;"><strong>Prioritas 2:</strong> Data Analyst - memanfaatkan minat matematika untuk insight bisnis</p>
+                <p style="color: #555; line-height: 1.6;"><strong>Prioritas 3:</strong> Software Engineer - untuk ambisi jangka panjang dan growth tertinggi</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const careerContents = document.querySelectorAll('.career-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.getAttribute('data-target');
+                
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                careerContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+
+        // Phase header click functionality for better UX
+        const phaseHeaders = document.querySelectorAll('.phase-header');
+        phaseHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                content.style.display = content.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+
+        // Add smooth scrolling animation when switching tabs
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'all 0.8s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // Add hover effects to skill categories
+        const skillCategories = document.querySelectorAll('.skill-category');
+        skillCategories.forEach(category => {
+            category.addEventListener('mouseenter', () => {
+                category.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            category.addEventListener('mouseleave', () => {
+                category.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add progress tracking (optional enhancement)
+        function trackProgress() {
+            const phases = document.querySelectorAll('.phase');
+            phases.forEach((phase, index) => {
+                phase.style.animationDelay = `${index * 0.2}s`;
+            });
+        }
+
+        // Initialize progress tracking
+        trackProgress();
+    </script>
+</body>
+</html>
